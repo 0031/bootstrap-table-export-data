@@ -1,0 +1,21 @@
+{
+  "name": "bootstrap-table-export-data",
+  "description": "A The bootstrap-table plug-in exports data to the file.",
+  "main": ["./src/","./dist/"],
+  "authors": [
+    "0031"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "bootstrap-table",
+    "bootstrap-table-export-data"
+  ],
+  "homepage": "https://github.com/0031/bootstrap-table-export-data#readme",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

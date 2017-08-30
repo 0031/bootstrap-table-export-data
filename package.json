@@ -1,0 +1,33 @@
+{
+  "name": "bootstrap-table-export-data",
+  "version": "1.0.0",
+  "description": "A The bootstrap-table plug-in exports data to the file.",
+  "main": "./src/",
+  "scripts": {
+    "clean": "gulp clean",
+    "dist": "gulp jsmini && gulp mvfile-dist",
+    "test": "echo This is a test!"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/0031/bootstrap-table-export-data.js.git"
+  },
+  "keywords": [
+    "bootstrap-table",
+    "bootstrap-table-export-data"
+  ],
+  "author": "0031",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/0031/bootstrap-table-export-data.js/issues"
+  },
+  "homepage": "https://github.com/0031/bootstrap-table-export-data.js#readme",
+  "devDependencies": {
+    "del": "^2.2.2",
+    "gulp": "^3.9.1",
+    "gulp-jshint": "^2.0.4",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^2.0.0",
+    "jshint": "^2.9.4"
+  }
+}
