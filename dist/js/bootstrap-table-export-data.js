@@ -28,7 +28,9 @@
             minPageSize: 100,
             maxPageSize: 1000,
             pageSizeStep: 50,
-            customPageSize: 300
+            customPageSize: 300,
+            // 开启自定义导出条数，导出文件前先执行该回调函数
+            customExportTableCallback: function(){}
         }
     };
 
@@ -55,7 +57,6 @@
 
     // 扩展toolbar
     BootstrapTable.prototype.initToolbar = function () {
-        this.showToolbar = this.options.showExport;
 
         _initToolbar.apply(this, Array.prototype.slice.apply(arguments));
 
@@ -82,11 +83,11 @@
                         sprintf(' btn-%s', this.options.buttonsClass) +
                         sprintf(' btn-%s', this.options.iconSize) +
                         ' dropdown-toggle"' +
-                        'title="' + this.options.formatExport() + '">',
+                        'title="' + this.options.formatExport() + '" data-toggle="dropdown">',
                     sprintf('<i class="%s %s"></i> ', this.options.iconsPrefix, this.options.icons.export),
                     '<span class="caret"></span>',
                     '</button>',
-                    '<ul class="dropdown-menu" role="menu">',
+                    '<ul class="dropdown-menu" role="menu" data-stop-propagation="true">',
                     '</ul>',
                     '</div>'].join('')).appendTo($btnGroup);
 
@@ -177,7 +178,7 @@
                             $(this).blur();
                         }
                         // 阻止事件冒泡
-                        e.stopPropagation();
+                        e.stopImmediatePropagation();
                     });
                 } else {
                     console.error('未引入istvan-ujjmeszaros/bootstrap-touchspin.js, 请检查代码.');
@@ -216,28 +217,6 @@
                     }
                 });
 
-                // 所有group只能存在一个
-                $('.btn-group > .dropdown-toggle').off('click').on('click', function (e) {
-                    // 获取当前打开状态
-                    var $parent = $(this).parent();
-                    var hasOpen = $parent.hasClass('open');
-                    // 移除所有
-                    $('.btn-group').each(function () {
-                        $(this).removeClass('open');
-                    });
-                    if (hasOpen) {
-                        // 删除当前
-                        $parent.removeClass('open');
-                    } else {
-                        // 添加当前
-                        $parent.addClass('open');
-                    }
-
-                    // 阻止事件冒泡, 去除原有group点击绑定
-                    e.stopPropagation();
-                });
-
-
                 // 下拉菜单a标签点击
                 $menu.find('li > a').on('click', function () {
                     // 获取导出文件类型
@@ -270,12 +249,12 @@
                     if (customExportFlag) {
                         $spin.trigger('change');
                         // 自定义导出条数, 先加载数据, 再导出
-                        if (typeof window.customExportTable == 'function') {
-                            window.customExportTable(function () {
+                        if (typeof that.options.exportOptions.customExportTableCallback == 'function') {
+                            that.options.exportOptions.customExportTableCallback(function () {
                                 doExport()
                             });
                         } else {
-                            console.warn('window.customExportTable函数不存在, 自定义导出开关未生效.');
+                            console.warn('customExportTableCallback函数不存在, 自定义导出开关未生效.');
                         }
                     } else {
                         // 直接导出当前页
@@ -299,6 +278,11 @@
                     } else {
                         $li.slideUp();
                     }
+                });
+
+                // 阻止下拉菜单关闭
+                $('body').on('click','[data-stop-propagation]',function (e) {
+                    e.stopImmediatePropagation();
                 });
 
             }
